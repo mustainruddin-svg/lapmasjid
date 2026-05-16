@@ -5,6 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LPJ Live – Masjid Ar-Rahmah</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  /* =========================================
+     📱 PENYESUAIAN TAMPILAN MOBILE (HP)
+     ========================================= */
+  @media (max-width: 768px) {
+    /* 1. Mengubah grid utama menjadi 1 kolom bertumpuk */
+    .main { 
+      grid-template-columns: 1fr; 
+      padding: 14px 16px; 
+    }
+    
+    /* Memaksa grafik bar (yang tadinya 2 kolom) menjadi 1 kolom di HP */
+    .card[style*="grid-column"] { 
+      grid-column: 1 / -1 !important; 
+    }
+
+    /* 2. Penyesuaian Header agar rapi saat ruang sempit */
+    .header { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 16px 20px; 
+      gap: 12px; 
+    }
+    .header-right { 
+      align-items: flex-start; 
+      text-align: left; 
+    }
+
+    /* 3. Filter Bar bertumpuk */
+    .filter-bar { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 14px 20px; 
+    }
+    .filter-group { 
+      width: 100%; 
+      justify-content: space-between; 
+    }
+    .shortcut-btns { 
+      width: 100%; 
+      justify-content: flex-start; 
+    }
+
+    /* 4. Membuat tabel bisa digeser (scroll) ke samping agar tidak terpotong */
+    .txn-wrap { 
+      overflow-x: auto; 
+    }
+    table { 
+      min-width: 600px; /* Memaksa tabel tetap lebar di dalam wadah yang bisa di-scroll */
+    }
+
+    /* 5. Footer menjadi rata tengah */
+    .footer { 
+      flex-direction: column; 
+      text-align: center; 
+      gap: 8px; 
+      padding: 16px 20px; 
+    }
+  }
+
+  /* Penyesuaian ekstra untuk layar HP yang sangat kecil (seperti iPhone SE) */
+  @media (max-width: 480px) {
+    .summary-row { 
+      grid-template-columns: 1fr; /* Kartu nominal tumpuk 1-1 ke bawah */
+    }
+    .mini-grid { 
+      grid-template-columns: 1fr; /* Kartu sumber dana tumpuk 1-1 */
+    }
+    .filter-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .filter-btn {
+      width: 100%;
+    }
+  }
 <style>
 
   :root {
