@@ -5,83 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LPJ Live – Masjid Ar-Rahmah</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-
 <style>
-  /* =========================================
-     📱 PENYESUAIAN TAMPILAN MOBILE (HP)
-     ========================================= */
-  @media (max-width: 768px) {
-    /* 1. Mengubah grid utama menjadi 1 kolom bertumpuk */
-    .main { 
-      grid-template-columns: 1fr; 
-      padding: 14px 16px; 
-    }
-    
-    /* Memaksa grafik bar (yang tadinya 2 kolom) menjadi 1 kolom di HP */
-    .card[style*="grid-column"] { 
-      grid-column: 1 / -1 !important; 
-    }
 
-    /* 2. Penyesuaian Header agar rapi saat ruang sempit */
-    .header { 
-      flex-direction: column; 
-      align-items: flex-start; 
-      padding: 16px 20px; 
-      gap: 12px; 
-    }
-    .header-right { 
-      align-items: flex-start; 
-      text-align: left; 
-    }
-
-    /* 3. Filter Bar bertumpuk */
-    .filter-bar { 
-      flex-direction: column; 
-      align-items: flex-start; 
-      padding: 14px 20px; 
-    }
-    .filter-group { 
-      width: 100%; 
-      justify-content: space-between; 
-    }
-    .shortcut-btns { 
-      width: 100%; 
-      justify-content: flex-start; 
-    }
-
-    /* 4. Membuat tabel bisa digeser (scroll) ke samping agar tidak terpotong */
-    .txn-wrap { 
-      overflow-x: auto; 
-    }
-    table { 
-      min-width: 600px; /* Memaksa tabel tetap lebar di dalam wadah yang bisa di-scroll */
-    }
-
-    /* 5. Footer menjadi rata tengah */
-    .footer { 
-      flex-direction: column; 
-      text-align: center; 
-      gap: 8px; 
-      padding: 16px 20px; 
-    }
-  }
-
-  /* Penyesuaian ekstra untuk layar HP yang sangat kecil (seperti iPhone SE) */
-  @media (max-width: 480px) {
-    .summary-row { 
-      grid-template-columns: 1fr; /* Kartu nominal tumpuk 1-1 ke bawah */
-    }
-    .mini-grid { 
-      grid-template-columns: 1fr; /* Kartu sumber dana tumpuk 1-1 */
-    }
-    .filter-group {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .filter-btn {
-      width: 100%;
-    }
-  }
   :root {
     --sky: #0090D0; --sky-dark: #006FA6; --sky-light: #E6F5FC; --sky-mid: #B3DCF5;
     --gold: #B8860B; --gold-light: #FFF8E1;
@@ -247,6 +172,86 @@
     .summary-row { grid-template-columns:repeat(2,1fr); }
     .filter-bar { padding:10px 14px; }
   }
+
+  /* =========================================================
+     📱 SPESIFIKASI RESPONSIVE 1 KOLOM UNTUK MOBILE (MAX 768PX)
+     ========================================================= */
+  @media (max-width: 768px) {
+    /* Memaksa grid dashboard utama menjadi hanya 1 kolom penuh ke bawah */
+    .main { 
+      grid-template-columns: 1fr !important; 
+      padding: 14px 16px; 
+      gap: 16px;
+    }
+    
+    /* Memaksa seluruh kartu ringkasan nominal tumpuk 1 per baris */
+    .summary-row {
+      grid-template-columns: 1fr !important;
+      gap: 14px;
+    }
+
+    /* Memaksa semua kartu info & grafik mengambil lebar penuh (tidak terbagi layar) */
+    .card {
+      grid-column: 1 / -1 !important;
+    }
+
+    /* Penyesuaian susunan komponen Header */
+    .header { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 16px 20px; 
+      gap: 12px; 
+    }
+    .header-right { 
+      align-items: flex-start; 
+      text-align: left; 
+    }
+
+    /* Penyesuaian komponen Filter Bar */
+    .filter-bar { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 14px 20px; 
+      gap: 12px;
+    }
+    .filter-group { 
+      width: 100%; 
+      justify-content: flex-start; 
+      gap: 8px;
+    }
+    .filter-input {
+      flex: 1;
+      min-width: 100px;
+    }
+    .shortcut-btns { 
+      width: 100%; 
+      justify-content: flex-start; 
+      gap: 6px;
+    }
+
+    /* Menjadikan sub-infobox Realisasi Dana berbaris 1 kolom tunggal */
+    .mini-grid {
+      grid-template-columns: 1fr !important;
+      gap: 10px;
+    }
+
+    /* Memastikan tabel riwayat transaksi aman digeser dan tidak merusak layout */
+    .txn-wrap { 
+      overflow-x: auto; 
+    }
+    table { 
+      min-width: 600px; 
+    }
+
+    /* Penyesuaian komponen kaki halaman */
+    .footer { 
+      flex-direction: column; 
+      text-align: center; 
+      gap: 8px; 
+      padding: 16px 20px; 
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -466,7 +471,6 @@ let filterDari   = null;         // Date object | null
 let filterSampai = null;         // Date object | null
 
 // ── PARSE TANGGAL ────────────────────────────────────────────
-// Prioritas: tglISO (yyyy-MM-dd dari Apps Script), fallback string
 const BULAN_ID = {jan:0,feb:1,mar:2,apr:3,mei:4,jun:5,
                   jul:6,agt:7,sep:8,okt:9,nov:10,des:11};
 
@@ -484,7 +488,6 @@ function parseTglStr(s) {
 }
 
 function getTglDate(t) {
-  // Gunakan tglISO jika tersedia (lebih akurat, dari Apps Script v3)
   if (t.tglISO && t.tglISO.length === 10) return new Date(t.tglISO);
   return parseTglStr(t.tanggal);
 }
@@ -522,7 +525,6 @@ function hitungDariTxn(list) {
       totalMasuk += v;
       if (!bulanan[bulanKey]) bulanan[bulanKey] = {masuk:0,keluar:0};
       bulanan[bulanKey].masuk += v;
-      // sumber
       if (k.includes('yayasan') || k.includes('infaq yayasan') || k.includes('infak yayasan')) sumber.yayasan += v;
       else if (k.includes('mandiri')) sumber.mandiri += v;
       else if (k.includes('infak') || k.includes('infaq')) sumber.infak += v;
@@ -533,7 +535,6 @@ function hitungDariTxn(list) {
       totalKeluar += v;
       if (!bulanan[bulanKey]) bulanan[bulanKey] = {masuk:0,keluar:0};
       bulanan[bulanKey].keluar += v;
-      // kategori
       if (k.includes('besi') || k.includes('bondex') || k.includes('kawat') || k.includes('semen') || k.includes('cipping') || k.includes('pasir') || k.includes('batu') || k.includes('granit') || k.includes('keramik')) kategori["Besi & Material"] += v;
       else if (k.includes('honor tukang') || k.includes('upah tukang') || k.includes('upah kerja') || k.includes('borongan')) kategori["Honor Tukang"] += v;
       else if (k.includes('eksterior')) kategori["Eksterior"] += v;
@@ -564,10 +565,8 @@ function applyFilter() {
   filterDari   = dariEl.value   ? new Date(dariEl.value)   : null;
   filterSampai = sampaiEl.value ? new Date(sampaiEl.value) : null;
 
-  // Set sampai ke akhir hari
   if (filterSampai) filterSampai.setHours(23,59,59,999);
 
-  // Nonaktifkan semua shortcut button
   document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
   if (!filterDari && !filterSampai) {
     document.querySelectorAll('.sc-btn').forEach(b => { if(b.textContent==='Semua') b.classList.add('active'); });
@@ -603,11 +602,9 @@ function setShortcut(key) {
   filterDari   = dari;
   filterSampai = sampai ? new Date(sampai.setHours(23,59,59,999)) : null;
 
-  // Update input fields
   document.getElementById('f-dari').value   = dari   ? dari.toISOString().slice(0,10)   : '';
   document.getElementById('f-sampai').value = sampai ? new Date(sampai).toISOString().slice(0,10) : '';
 
-  // Update active button
   document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
 
@@ -617,10 +614,22 @@ function setShortcut(key) {
 
 function renderFiltered() {
   if (!cachedData) return;
-  // Ambil semua transaksi dari cache lalu filter
   const filtered = filterTxn(cachedData.transaksi);
   const computed  = hitungDariTxn(filtered);
   renderAll(computed);
+}
+
+function updateFilterStatus() {
+  const el = document.getElementById('filter-status');
+  if (!filterDari && !filterSampai) {
+    el.classList.remove('active');
+    el.textContent = '';
+  } else {
+    const dari   = filterDari   ? filterDari.toLocaleDateString('id-ID')   : '…';
+    const sampai = filterSampai ? filterSampai.toLocaleDateString('id-ID') : '…';
+    el.textContent = '📅 ' + dari + ' – ' + sampai;
+    el.classList.add('active');
+  }
 }
 
 // ── CLOCK ──────────────────────────────────────────────────
@@ -634,24 +643,21 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ── FETCH DATA (JSONP – bekerja dari file:// maupun http://) ──
+// ── FETCH DATA (JSONP) ──
 let _jsonpTimer = null;
 
 function fetchData() {
   setSyncStatus('Menyinkronkan data…', false);
 
-  // Hapus script JSONP lama jika ada
   const old = document.getElementById('_jsonp_script');
   if (old) old.remove();
 
-  // Timeout handler
   if (_jsonpTimer) clearTimeout(_jsonpTimer);
   _jsonpTimer = setTimeout(() => {
     setSyncStatus('⚠ Timeout – coba lagi…', false);
     showError('Tidak ada respons dari Apps Script dalam 15 detik. Pastikan deployment sudah aktif dan aksesnya "Anyone".');
   }, 15000);
 
-  // Buat tag <script> JSONP
   const s = document.createElement('script');
   s.id  = '_jsonp_script';
   s.src = APPS_SCRIPT_URL + '?callback=onDataLoaded&t=' + Date.now();
@@ -663,7 +669,6 @@ function fetchData() {
   document.head.appendChild(s);
 }
 
-// ── JSONP CALLBACK (dipanggil oleh Apps Script) ────────────
 function onDataLoaded(data) {
   clearTimeout(_jsonpTimer);
   try {
