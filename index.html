@@ -4,198 +4,210 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LPJ Live – Masjid Ar-Rahmah</title>
+<link rel="icon" type="image/png" href="logomasjidarrahmah.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root {
-    --sky: #0090D0; --sky-dark: #006FA6; --sky-light: #E6F5FC; --sky-mid: #B3DCF5;
-    --gold: #B8860B; --gold-light: #FFF8E1;
-    --bg: #F0F4F8; --bg2: #ffffff; --bg3: #F7FAFC;
-    --text: #1A2B3C; --text2: #3A5068; --text3: #7A9AB8;
-    --border: rgba(0,144,208,0.18); --border2: rgba(0,144,208,0.10);
-    --green: #0E9E70; --green-bg: #E6F7F2;
-    --red: #D0282A; --red-bg: #FDEAEA;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Segoe UI',Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+:root {
+  --sky: #0090D0; --sky-dark: #006FA6; --sky-light: #E6F5FC; --sky-mid: #B3DCF5;
+  --gold: #B8860B; --gold-light: #FFF8E1;
+  --bg: #EEF3F8; --bg2: #ffffff; --bg3: #F7FAFC;
+  --text: #16232F; --text2: #33495D; --text3: #5F7A93;
+  --border: rgba(0,144,208,0.18); --border2: rgba(0,144,208,0.10);
+  --green: #0B8C63; --green-bg: #E6F7F2;
+  --red: #C41F21; --red-bg: #FDEAEA;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; line-height:1.4; }
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg,#005f8e 0%,#0077b6 45%,#00a8e8 100%);
-    padding:18px 36px; display:flex; align-items:center; justify-content:space-between;
-    box-shadow:0 4px 20px rgba(0,120,180,0.18); position:relative; overflow:hidden;
-  }
-  .header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#B8860B,#E8C44A,#B8860B); }
-  .header-left { display:flex; align-items:center; gap:14px; z-index:1; }
-  .mosque-icon { font-size:40px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.2)); }
-  .h-title { color:#fff; font-size:20px; font-weight:700; }
-  .h-sub { color:rgba(255,255,255,.82); font-size:12px; letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
-  .header-right { z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
-  .live-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.4); border-radius:20px; padding:5px 14px; font-size:11px; color:#fff; font-weight:700; letter-spacing:1px; }
-  .live-dot { width:8px; height:8px; border-radius:50%; background:#4DFFC0; animation:blink 1.5s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-  .sync-info { font-size:11px; color:rgba(255,255,255,.75); }
-  .sync-ok { color:#4DFFC0 !important; }
-  .sync-err { color:#FF8080 !important; }
+/* HEADER */
+.header {
+  background: linear-gradient(135deg,#005f8e 0%,#0077b6 45%,#00a8e8 100%);
+  padding:20px 36px; display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 4px 20px rgba(0,120,180,0.18); position:relative; overflow:hidden;
+}
+.header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#B8860B,#E8C44A,#B8860B); }
+.header-left { display:flex; align-items:center; gap:16px; z-index:1; }
+.mosque-logo { height:52px; width:auto; background:#fff; border-radius:12px; padding:6px 10px; box-shadow:0 3px 10px rgba(0,0,0,.18); }
+.h-title { color:#fff; font-size:22px; font-weight:800; letter-spacing:.3px; }
+.h-sub { color:rgba(255,255,255,.88); font-size:12.5px; letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; font-weight:600; }
+.header-right { z-index:1; text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.live-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.20); border:1px solid rgba(255,255,255,.45); border-radius:20px; padding:5px 14px; font-size:11px; color:#fff; font-weight:700; letter-spacing:1px; }
+.live-dot { width:8px; height:8px; border-radius:50%; background:#4DFFC0; animation:blink 1.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.sync-info { font-size:12px; color:rgba(255,255,255,.85); font-weight:600; }
+.sync-ok { color:#4DFFC0 !important; }
+.sync-err { color:#FFB3B3 !important; }
 
-  /* TICKER */
-  .ticker-wrap { background:linear-gradient(90deg,#B8860B,#E8C44A,#B8860B); padding:8px 0; overflow:hidden; }
-  .ticker-track { display:flex; animation:ticker 70s linear infinite; white-space:nowrap; }
-  .ticker-track span { display:inline-block; padding:0 40px; font-size:12px; font-weight:700; color:#5C3D00; }
-  @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+/* TICKER */
+.ticker-wrap { background:linear-gradient(90deg,#B8860B,#E8C44A,#B8860B); padding:9px 0; overflow:hidden; }
+.ticker-track { display:flex; animation:ticker 70s linear infinite; white-space:nowrap; }
+.ticker-track span { display:inline-block; padding:0 40px; font-size:12.5px; font-weight:700; color:#4A3200; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-  /* SKELETON */
-  .skeleton { background:linear-gradient(90deg,#e0e8f0 25%,#f0f4f8 50%,#e0e8f0 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; display:block; }
-  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+/* SKELETON */
+.skeleton { background:linear-gradient(90deg,#e0e8f0 25%,#f0f4f8 50%,#e0e8f0 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:8px; display:block; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-  /* DEBUG PANEL */
-  .debug-panel {
-    background:#1A2B3C; color:#4DFFC0; font-family:monospace; font-size:11px;
-    padding:10px 32px; border-bottom:2px solid #0090D0;
-    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
-  }
-  .debug-label { color:#7A9AB8; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
-  .debug-val { color:#4DFFC0; font-weight:700; }
-  .debug-err { color:#FF8080; }
-  .debug-toggle { margin-left:auto; padding:3px 10px; border-radius:6px; border:1px solid #0090D0; background:transparent; color:#4DFFC0; font-size:10px; cursor:pointer; letter-spacing:1px; }
-  .debug-toggle:hover { background:#0090D020; }
-  .debug-log { display:none; background:#111; color:#aaa; font-family:monospace; font-size:10px; padding:10px 32px; max-height:120px; overflow-y:auto; border-bottom:1px solid #0090D030; }
-  .debug-log.show { display:block; }
+/* ADMIN / DEBUG PANEL — tersembunyi secara default, hanya untuk pengelola */
+.admin-toggle {
+  position:fixed; bottom:16px; right:16px; z-index:50;
+  width:38px; height:38px; border-radius:50%; border:none;
+  background:var(--sky-dark); color:#fff; font-size:15px; cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,90,140,.35); opacity:.55; transition:opacity .2s;
+}
+.admin-toggle:hover { opacity:1; }
+.debug-panel {
+  display:none;
+  background:#16232F; color:#4DFFC0; font-family:monospace; font-size:11px;
+  padding:10px 32px; border-bottom:2px solid #0090D0;
+  align-items:center; gap:16px; flex-wrap:wrap;
+}
+.debug-panel.show { display:flex; }
+.debug-label { color:#8FAFC8; font-size:10px; text-transform:uppercase; letter-spacing:1px; }
+.debug-val { color:#4DFFC0; font-weight:700; }
+.debug-err { color:#FF8080; }
+.debug-toggle { margin-left:auto; padding:3px 10px; border-radius:6px; border:1px solid #0090D0; background:transparent; color:#4DFFC0; font-size:10px; cursor:pointer; letter-spacing:1px; }
+.debug-toggle:hover { background:#0090D020; }
+.debug-log { display:none; background:#111; color:#aaa; font-family:monospace; font-size:10px; padding:10px 32px; max-height:120px; overflow-y:auto; border-bottom:1px solid #0090D030; }
+.debug-log.show { display:block; }
 
-  /* ERROR BANNER */
-  .error-banner { display:none; background:#FFF0F0; border:1px solid rgba(208,40,42,.3); border-radius:10px; padding:14px 22px; margin:16px 30px 0; font-size:13px; color:var(--red); line-height:1.6; }
-  .error-banner ul { margin-top:8px; padding-left:18px; }
-  .error-banner li { margin:3px 0; }
+/* ERROR BANNER */
+.error-banner { display:none; background:#FFF0F0; border:1px solid rgba(196,31,33,.3); border-radius:10px; padding:14px 22px; margin:16px 30px 0; font-size:13px; color:var(--red); line-height:1.6; }
+.error-banner ul { margin-top:8px; padding-left:18px; }
+.error-banner li { margin:3px 0; }
 
-  /* FILTER BAR */
-  .filter-bar {
-    background: var(--bg2); border-bottom: 1px solid var(--border);
-    padding: 10px 32px; display: flex; align-items: center;
-    gap: 12px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,100,160,.06);
-  }
-  .filter-label { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); white-space:nowrap; }
-  .filter-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .filter-input { border:1px solid var(--border); border-radius:8px; padding:6px 12px; font-size:12px; color:var(--text); background:var(--bg3); outline:none; cursor:pointer; transition:border-color .2s; }
-  .filter-input:focus { border-color:var(--sky); }
-  .filter-sep { font-size:12px; color:var(--text3); }
-  .filter-btn { padding:6px 14px; border-radius:8px; border:1px solid var(--border); font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
-  .filter-btn.apply { background:var(--sky-dark); color:#fff; border-color:var(--sky-dark); }
-  .filter-btn.apply:hover { background:var(--sky); }
-  .filter-btn.reset { background:var(--bg3); color:var(--text2); }
-  .filter-btn.reset:hover { background:var(--red-bg); color:var(--red); border-color:rgba(208,40,42,.3); }
-  .shortcut-btns { display:flex; gap:6px; flex-wrap:wrap; }
-  .sc-btn { padding:5px 11px; border-radius:20px; border:1px solid var(--border); font-size:11px; font-weight:600; cursor:pointer; background:var(--bg3); color:var(--text2); transition:all .15s; }
-  .sc-btn:hover, .sc-btn.active { background:var(--sky-light); color:var(--sky-dark); border-color:var(--sky-mid); }
-  .filter-status { margin-left:auto; font-size:11px; color:var(--sky-dark); background:var(--sky-light); border:1px solid var(--sky-mid); border-radius:20px; padding:4px 12px; font-weight:600; display:none; }
-  .filter-status.active { display:inline-block; }
+/* FILTER BAR */
+.filter-bar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 12px 32px; display: flex; align-items: center;
+  gap: 12px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,100,160,.06);
+}
+.filter-label { font-size:11.5px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text2); white-space:nowrap; }
+.filter-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.filter-input { border:1px solid var(--border); border-radius:8px; padding:7px 12px; font-size:12.5px; color:var(--text); background:var(--bg3); outline:none; cursor:pointer; transition:border-color .2s; }
+.filter-input:focus { border-color:var(--sky); }
+.filter-sep { font-size:12px; color:var(--text3); }
+.filter-btn { padding:7px 14px; border-radius:8px; border:1px solid var(--border); font-size:12.5px; font-weight:700; cursor:pointer; transition:all .15s; }
+.filter-btn.apply { background:var(--sky-dark); color:#fff; border-color:var(--sky-dark); }
+.filter-btn.apply:hover { background:var(--sky); }
+.filter-btn.reset { background:var(--bg3); color:var(--text2); }
+.filter-btn.reset:hover { background:var(--red-bg); color:var(--red); border-color:rgba(196,31,33,.3); }
+.shortcut-btns { display:flex; gap:6px; flex-wrap:wrap; }
+.sc-btn { padding:6px 12px; border-radius:20px; border:1px solid var(--border); font-size:11.5px; font-weight:700; cursor:pointer; background:var(--bg3); color:var(--text2); transition:all .15s; }
+.sc-btn:hover, .sc-btn.active { background:var(--sky-light); color:var(--sky-dark); border-color:var(--sky-mid); }
+.filter-status { margin-left:auto; font-size:11.5px; color:var(--sky-dark); background:var(--sky-light); border:1px solid var(--sky-mid); border-radius:20px; padding:5px 12px; font-weight:700; display:none; }
+.filter-status.active { display:inline-block; }
 
-  /* MAIN */
-  .main { padding:22px 30px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+/* MAIN */
+.main { padding:24px 30px 40px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; max-width:1400px; margin:0 auto; }
 
-  /* SUMMARY ROW */
-  .summary-row { grid-column:1/-1; display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-  .summary-card { background:var(--bg2); border-radius:14px; padding:18px 20px; position:relative; overflow:hidden; text-align:center; box-shadow:0 2px 12px rgba(0,100,160,.08); border:1px solid transparent; }
-  .summary-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:14px 14px 0 0; }
-  .summary-card.income  { border-color:rgba(14,158,112,.2);  } .summary-card.income::before  { background:linear-gradient(90deg,#0E9E70,#34D399); }
-  .summary-card.expense { border-color:rgba(208,40,42,.2);   } .summary-card.expense::before { background:linear-gradient(90deg,#D0282A,#F87171); }
-  .summary-card.saldo   { border-color:rgba(184,134,11,.25); } .summary-card.saldo::before   { background:linear-gradient(90deg,#B8860B,#E8C44A); }
-  .summary-card.tx      { border-color:rgba(0,144,208,.2);   } .summary-card.tx::before      { background:linear-gradient(90deg,var(--sky-dark),var(--sky)); }
-  .s-icon { font-size:26px; margin-bottom:6px; }
-  .s-label { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text3); margin-bottom:5px; }
-  .s-value { font-size:18px; font-weight:700; line-height:1.2; }
-  .s-value.green{color:var(--green)} .s-value.red{color:var(--red)} .s-value.gold{color:var(--gold)} .s-value.sky{color:var(--sky-dark)}
-  .s-sub { font-size:10px; color:var(--text3); margin-top:3px; }
+/* SUMMARY ROW */
+.summary-row { grid-column:1/-1; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.summary-card { background:var(--bg2); border-radius:16px; padding:20px 22px; position:relative; overflow:hidden; text-align:center; box-shadow:0 2px 14px rgba(0,100,160,.09); border:1px solid transparent; transition:transform .15s; }
+.summary-card:hover { transform:translateY(-2px); }
+.summary-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; border-radius:16px 16px 0 0; }
+.summary-card.income { border-color:rgba(11,140,99,.2); } .summary-card.income::before { background:linear-gradient(90deg,#0B8C63,#34D399); }
+.summary-card.expense { border-color:rgba(196,31,33,.2); } .summary-card.expense::before { background:linear-gradient(90deg,#C41F21,#F87171); }
+.summary-card.saldo { border-color:rgba(184,134,11,.25); } .summary-card.saldo::before { background:linear-gradient(90deg,#B8860B,#E8C44A); }
+.summary-card.tx { border-color:rgba(0,144,208,.2); } .summary-card.tx::before { background:linear-gradient(90deg,var(--sky-dark),var(--sky)); }
+.s-icon { font-size:28px; margin-bottom:8px; }
+.s-label { font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--text2); margin-bottom:7px; }
+.s-value { font-size:24px; font-weight:800; line-height:1.2; letter-spacing:-.3px; }
+.s-value.green{color:var(--green)} .s-value.red{color:var(--red)} .s-value.gold{color:var(--gold)} .s-value.sky{color:var(--sky-dark)}
+.s-sub { font-size:11px; color:var(--text3); margin-top:5px; font-weight:600; }
 
-  /* CARD */
-  .card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; padding:20px 22px; position:relative; overflow:hidden; box-shadow:0 2px 12px rgba(0,100,160,.06); }
-  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--sky-dark),var(--sky)); border-radius:14px 14px 0 0; }
-  .card-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text3); margin-bottom:14px; padding-top:2px; }
+/* CARD */
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:22px 24px; position:relative; overflow:hidden; box-shadow:0 2px 14px rgba(0,100,160,.07); }
+.card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--sky-dark),var(--sky)); border-radius:16px 16px 0 0; }
+.card-title { font-size:11px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; color:var(--text2); margin-bottom:16px; padding-top:2px; }
 
-  /* KAT LIST */
-  .kat-list { list-style:none; }
-  .kat-item { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid rgba(0,100,160,.07); }
-  .kat-item:last-child { border-bottom:none; }
-  .kat-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-  .kat-name { font-size:12px; color:var(--text2); flex:1; }
-  .kat-amount { font-size:12px; font-weight:700; color:var(--text); }
+/* KAT LIST */
+.kat-list { list-style:none; }
+.kat-item { display:flex; align-items:center; gap:9px; padding:8px 0; border-bottom:1px solid rgba(0,100,160,.08); }
+.kat-item:last-child { border-bottom:none; }
+.kat-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.kat-name { font-size:12.5px; color:var(--text2); flex:1; font-weight:500; }
+.kat-amount { font-size:12.5px; font-weight:700; color:var(--text); }
 
-  /* PROGRESS */
-  .prog-wrap { margin-top:10px; }
-  .prog-label { display:flex; justify-content:space-between; margin-bottom:4px; font-size:12px; color:var(--text2); }
-  .prog-bar { height:8px; background:rgba(0,100,160,.1); border-radius:4px; overflow:hidden; }
-  .prog-fill { height:100%; border-radius:4px; transition:width 1.2s ease; }
-  .fill-sky  { background:linear-gradient(90deg,var(--sky-dark),var(--sky)); }
-  .fill-gold { background:linear-gradient(90deg,#a07a10,var(--gold)); }
+/* PROGRESS */
+.prog-wrap { margin-top:10px; }
+.prog-label { display:flex; justify-content:space-between; margin-bottom:5px; font-size:12.5px; color:var(--text2); font-weight:600; }
+.prog-bar { height:9px; background:rgba(0,100,160,.1); border-radius:5px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:5px; transition:width 1.2s ease; }
+.fill-sky { background:linear-gradient(90deg,var(--sky-dark),var(--sky)); }
+.fill-gold { background:linear-gradient(90deg,#a07a10,var(--gold)); }
 
-  /* MINI GRID */
-  .mini-grid { margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .mini-box { border-radius:10px; padding:11px; text-align:center; }
-  .mini-box.sky    { background:var(--sky-light); border:1px solid var(--sky-mid); }
-  .mini-box.gold   { background:var(--gold-light); border:1px solid rgba(184,134,11,.25); }
-  .mini-box.green  { background:var(--green-bg); border:1px solid rgba(14,158,112,.25); }
-  .mini-box.purple { background:#F3EEFF; border:1px solid rgba(130,80,200,.2); }
-  .mini-label { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); margin-bottom:3px; }
-  .mini-val   { font-size:14px; font-weight:700; }
-  .mini-box.sky .mini-val{color:var(--sky-dark)} .mini-box.gold .mini-val{color:var(--gold)} .mini-box.green .mini-val{color:var(--green)} .mini-box.purple .mini-val{color:#6D35C7}
-  .mini-sub   { font-size:10px; color:var(--text3); margin-top:1px; }
+/* MINI GRID */
+.mini-grid { margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.mini-box { border-radius:12px; padding:12px; text-align:center; }
+.mini-box.sky { background:var(--sky-light); border:1px solid var(--sky-mid); }
+.mini-box.gold { background:var(--gold-light); border:1px solid rgba(184,134,11,.25); }
+.mini-box.green { background:var(--green-bg); border:1px solid rgba(11,140,99,.25); }
+.mini-box.purple { background:#F3EEFF; border:1px solid rgba(130,80,200,.2); }
+.mini-label { font-size:9.5px; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; color:var(--text2); margin-bottom:4px; }
+.mini-val { font-size:15px; font-weight:800; }
+.mini-box.sky .mini-val{color:var(--sky-dark)} .mini-box.gold .mini-val{color:var(--gold)} .mini-box.green .mini-val{color:var(--green)} .mini-box.purple .mini-val{color:#6D35C7}
+.mini-sub { font-size:10px; color:var(--text3); margin-top:2px; font-weight:600; }
 
-  /* TABLE CARD */
-  .table-card { background:var(--bg2); border:1px solid var(--border); border-radius:14px; overflow:hidden; grid-column:1/-1; box-shadow:0 2px 12px rgba(0,100,160,.06); position:relative; }
-  .table-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--sky-dark),var(--sky)); z-index:1; }
-  .table-header { padding:16px 22px 10px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border2); }
-  .table-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--text3); }
-  .table-badge { font-size:11px; color:var(--sky-dark); background:var(--sky-light); border:1px solid var(--sky-mid); border-radius:20px; padding:3px 12px; font-weight:700; }
-  .txn-wrap { max-height:240px; overflow-y:auto; }
-  .txn-wrap::-webkit-scrollbar { width:4px; }
-  .txn-wrap::-webkit-scrollbar-thumb { background:var(--sky-mid); border-radius:2px; }
-  table { width:100%; border-collapse:collapse; }
-  thead th { padding:9px 14px; font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); text-align:left; background:var(--bg3); position:sticky; top:0; z-index:1; border-bottom:1px solid var(--border2); }
-  tbody tr { border-bottom:1px solid rgba(0,100,160,.06); transition:background .15s; }
-  tbody tr:hover { background:var(--sky-light); }
-  tbody td { padding:9px 14px; font-size:12px; color:var(--text2); }
-  .badge-in  { display:inline-block; padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; background:var(--green-bg); color:var(--green); border:1px solid rgba(14,158,112,.25); }
-  .badge-out { display:inline-block; padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; background:var(--red-bg); color:var(--red); border:1px solid rgba(208,40,42,.2); }
-  .amt-in  { color:var(--green); font-weight:700; text-align:right; }
-  .amt-out { color:var(--red);   font-weight:700; text-align:right; }
+/* TABLE CARD */
+.table-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; grid-column:1/-1; box-shadow:0 2px 14px rgba(0,100,160,.07); position:relative; }
+.table-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--sky-dark),var(--sky)); z-index:1; }
+.table-header { padding:18px 24px 12px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border2); flex-wrap:wrap; gap:10px; }
+.table-title { font-size:11px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; color:var(--text2); }
+.table-badge { font-size:11.5px; color:var(--sky-dark); background:var(--sky-light); border:1px solid var(--sky-mid); border-radius:20px; padding:4px 12px; font-weight:700; }
+.txn-wrap { max-height:260px; overflow-y:auto; }
+.txn-wrap::-webkit-scrollbar { width:5px; }
+.txn-wrap::-webkit-scrollbar-thumb { background:var(--sky-mid); border-radius:3px; }
+table { width:100%; border-collapse:collapse; }
+thead th { padding:10px 16px; font-size:9.5px; font-weight:800; letter-spacing:1.3px; text-transform:uppercase; color:var(--text2); text-align:left; background:var(--bg3); position:sticky; top:0; z-index:1; border-bottom:1px solid var(--border2); }
+tbody tr { border-bottom:1px solid rgba(0,100,160,.07); transition:background .15s; }
+tbody tr:hover { background:var(--sky-light); }
+tbody td { padding:10px 16px; font-size:12.5px; color:var(--text2); }
+.badge-in { display:inline-block; padding:3px 9px; border-radius:20px; font-size:9.5px; font-weight:800; background:var(--green-bg); color:var(--green); border:1px solid rgba(11,140,99,.25); }
+.badge-out { display:inline-block; padding:3px 9px; border-radius:20px; font-size:9.5px; font-weight:800; background:var(--red-bg); color:var(--red); border:1px solid rgba(196,31,33,.2); }
+.amt-in { color:var(--green); font-weight:700; text-align:right; }
+.amt-out { color:var(--red); font-weight:700; text-align:right; }
 
-  /* PAGINATION */
-  .pagination { display:flex; align-items:center; gap:10px; padding:10px 16px; border-top:1px solid var(--border2); background:var(--bg3); }
-  .page-btn { padding:5px 14px; border-radius:8px; border:1px solid var(--border); font-size:12px; font-weight:600; cursor:pointer; background:var(--bg2); color:var(--text2); transition:all .15s; }
-  .page-btn:hover:not(:disabled) { background:var(--sky-light); color:var(--sky-dark); border-color:var(--sky-mid); }
-  .page-btn:disabled { opacity:0.35; cursor:not-allowed; }
-  .page-info { font-size:12px; color:var(--text3); font-weight:600; flex:1; text-align:center; }
-  .page-size-select { border:1px solid var(--border); border-radius:8px; padding:5px 8px; font-size:11px; color:var(--text2); background:var(--bg2); cursor:pointer; }
-  .txn-filter-btn { padding:3px 10px; border-radius:20px; border:1px solid var(--border); font-size:10px; font-weight:700; cursor:pointer; background:var(--bg3); color:var(--text2); transition:all .15s; letter-spacing:.5px; }
-  .txn-filter-btn.active { background:var(--sky-dark); color:#fff; border-color:var(--sky-dark); }
-  .txn-filter-btn:hover:not(.active) { background:var(--sky-light); color:var(--sky-dark); }
+/* PAGINATION */
+.pagination { display:flex; align-items:center; gap:10px; padding:12px 18px; border-top:1px solid var(--border2); background:var(--bg3); flex-wrap:wrap; }
+.page-btn { padding:6px 14px; border-radius:8px; border:1px solid var(--border); font-size:12.5px; font-weight:700; cursor:pointer; background:var(--bg2); color:var(--text2); transition:all .15s; }
+.page-btn:hover:not(:disabled) { background:var(--sky-light); color:var(--sky-dark); border-color:var(--sky-mid); }
+.page-btn:disabled { opacity:0.35; cursor:not-allowed; }
+.page-info { font-size:12.5px; color:var(--text2); font-weight:700; flex:1; text-align:center; min-width:140px; }
+.page-size-select { border:1px solid var(--border); border-radius:8px; padding:6px 8px; font-size:11.5px; color:var(--text2); background:var(--bg2); cursor:pointer; }
+.txn-filter-btn { padding:4px 12px; border-radius:20px; border:1px solid var(--border); font-size:10.5px; font-weight:800; cursor:pointer; background:var(--bg3); color:var(--text2); transition:all .15s; letter-spacing:.5px; }
+.txn-filter-btn.active { background:var(--sky-dark); color:#fff; border-color:var(--sky-dark); }
+.txn-filter-btn:hover:not(.active) { background:var(--sky-light); color:var(--sky-dark); }
 
-  /* FOOTER */
-  .footer { background:var(--bg2); border-top:2px solid var(--border); padding:12px 32px; display:flex; align-items:center; justify-content:space-between; font-size:11px; color:var(--text3); }
-  .footer-brand { font-weight:700; color:var(--sky-dark); }
+/* FOOTER */
+.footer { background:var(--bg2); border-top:2px solid var(--border); padding:16px 32px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px; color:var(--text2); flex-wrap:wrap; gap:8px; }
+.footer-brand { display:flex; align-items:center; gap:8px; font-weight:800; color:var(--sky-dark); }
+.footer-logo { height:22px; width:auto; }
 
-  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .fade { animation:fadeUp .6s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.fade { animation:fadeUp .6s ease; }
 
-  /* RESPONSIVE */
-  @media (max-width:1200px) {
-    .main { padding:14px; }
-    .summary-row { grid-template-columns:repeat(2,1fr); }
-  }
-  @media (max-width:768px) {
-    .main { grid-template-columns:1fr !important; padding:14px 16px; }
-    .summary-row { grid-template-columns:1fr !important; }
-    .card { grid-column:1/-1 !important; }
-    .header { flex-direction:column; align-items:flex-start; padding:16px 20px; gap:12px; }
-    .header-right { align-items:flex-start; }
-    .filter-bar { flex-direction:column; align-items:flex-start; padding:14px 20px; gap:12px; }
-    .filter-group { width:100%; }
-    .filter-input { flex:1; min-width:100px; }
-    .shortcut-btns { width:100%; }
-    .mini-grid { grid-template-columns:1fr !important; }
-    .txn-wrap { overflow-x:auto; }
-    table { min-width:600px; }
-    .footer { flex-direction:column; text-align:center; gap:8px; padding:16px 20px; }
-    .debug-panel { padding:10px 16px; }
-  }
+/* RESPONSIVE */
+@media (max-width:1200px) {
+  .main { padding:16px; }
+  .summary-row { grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:768px) {
+  .main { grid-template-columns:1fr !important; padding:14px 16px; }
+  .summary-row { grid-template-columns:1fr !important; }
+  .card { grid-column:1/-1 !important; }
+  .header { flex-direction:column; align-items:flex-start; padding:16px 20px; gap:14px; }
+  .header-right { align-items:flex-start; width:100%; }
+  .filter-bar { flex-direction:column; align-items:flex-start; padding:14px 20px; gap:12px; }
+  .filter-group { width:100%; }
+  .filter-input { flex:1; min-width:100px; }
+  .shortcut-btns { width:100%; }
+  .mini-grid { grid-template-columns:1fr !important; }
+  .txn-wrap { overflow-x:auto; }
+  table { min-width:600px; }
+  .footer { flex-direction:column; text-align:center; padding:16px 20px; }
+  .debug-panel { padding:10px 16px; }
+}
 </style>
 </head>
 <body>
@@ -203,15 +215,15 @@
 <!-- HEADER -->
 <div class="header">
   <div class="header-left">
-    <div class="mosque-icon">🕌</div>
+    <img src="logomasjidarrahmah.png" alt="Logo Masjid Ar-Rahmah" class="mosque-logo">
     <div>
       <div class="h-title">Masjid Ar-Rahmah</div>
-      <div class="h-sub">Laporan Pertanggungjawaban Keuangan – Live</div>
+      <div class="h-sub">Laporan Pertanggungjawaban Keuangan &ndash; Live</div>
     </div>
   </div>
   <div class="header-right">
     <div class="live-badge"><span class="live-dot"></span>LIVE REPORT</div>
-    <div class="sync-info" id="sync-info">Menghubungkan…</div>
+    <div class="sync-info" id="sync-info">Menghubungkan&hellip;</div>
     <div class="sync-info" id="live-clock"></div>
   </div>
 </div>
@@ -219,31 +231,34 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-track" id="ticker">
-    <span>Menghubungkan ke server…</span><span>Menghubungkan ke server…</span>
-    <span>Menghubungkan ke server…</span><span>Menghubungkan ke server…</span>
+    <span>Menghubungkan ke server&hellip;</span><span>Menghubungkan ke server&hellip;</span>
+    <span>Menghubungkan ke server&hellip;</span><span>Menghubungkan ke server&hellip;</span>
   </div>
 </div>
 
-<!-- DEBUG PANEL -->
+<!-- ADMIN / DEBUG PANEL (tersembunyi, khusus pengelola) -->
 <div class="debug-panel" id="debug-panel">
-  <span><span class="debug-label">STATUS </span><span class="debug-val" id="dbg-status">Memulai…</span></span>
-  <span><span class="debug-label">METODE </span><span class="debug-val" id="dbg-method">–</span></span>
-  <span><span class="debug-label">TRANSAKSI </span><span class="debug-val" id="dbg-txn">–</span></span>
-  <span><span class="debug-label">RESPONSE </span><span class="debug-val" id="dbg-res">–</span></span>
-  <span><span class="debug-label">UPDATE </span><span class="debug-val" id="dbg-time">–</span></span>
-  <button class="debug-toggle" onclick="toggleLog()">▼ LOG</button>
+  <span><span class="debug-label">STATUS </span><span class="debug-val" id="dbg-status">Memulai&hellip;</span></span>
+  <span><span class="debug-label">METODE </span><span class="debug-val" id="dbg-method">&ndash;</span></span>
+  <span><span class="debug-label">TRANSAKSI </span><span class="debug-val" id="dbg-txn">&ndash;</span></span>
+  <span><span class="debug-label">RESPONSE </span><span class="debug-val" id="dbg-res">&ndash;</span></span>
+  <span><span class="debug-label">UPDATE </span><span class="debug-val" id="dbg-time">&ndash;</span></span>
+  <button class="debug-toggle" onclick="toggleLog()">&#9660; LOG</button>
 </div>
 <div class="debug-log" id="debug-log"></div>
+
+<!-- Tombol kecil untuk pengelola membuka panel teknis (tersembunyi dari tampilan publik) -->
+<button class="admin-toggle" onclick="toggleAdminPanel()" title="Panel teknis (pengelola)">&#9881;</button>
 
 <!-- ERROR BANNER -->
 <div class="error-banner" id="err-banner"></div>
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
-  <span class="filter-label">🗓 Filter Periode</span>
+  <span class="filter-label">&#128197; Filter Periode</span>
   <div class="filter-group">
     <input type="date" id="f-dari" class="filter-input" title="Dari tanggal">
-    <span class="filter-sep">–</span>
+    <span class="filter-sep">&ndash;</span>
     <input type="date" id="f-sampai" class="filter-input" title="Sampai tanggal">
     <button class="filter-btn apply" onclick="applyFilter()">Tampilkan</button>
     <button class="filter-btn reset" onclick="resetFilter()">Reset</button>
@@ -265,27 +280,27 @@
   <!-- SUMMARY CARDS -->
   <div class="summary-row fade">
     <div class="summary-card income">
-      <div class="s-icon">📥</div>
+      <div class="s-icon">&#128229;</div>
       <div class="s-label">Total Pemasukan</div>
-      <div class="s-value green" id="s-masuk">Rp –</div>
+      <div class="s-value green" id="s-masuk">Rp &ndash;</div>
       <div class="s-sub" id="s-masuk-sub">Seluruh sumber dana masuk</div>
     </div>
     <div class="summary-card expense">
-      <div class="s-icon">📤</div>
+      <div class="s-icon">&#128228;</div>
       <div class="s-label">Total Pengeluaran</div>
-      <div class="s-value red" id="s-keluar">Rp –</div>
+      <div class="s-value red" id="s-keluar">Rp &ndash;</div>
       <div class="s-sub" id="s-keluar-sub">Seluruh biaya pembangunan</div>
     </div>
     <div class="summary-card saldo">
-      <div class="s-icon">💰</div>
+      <div class="s-icon">&#128176;</div>
       <div class="s-label">Saldo Akhir</div>
-      <div class="s-value gold" id="s-saldo">Rp –</div>
+      <div class="s-value gold" id="s-saldo">Rp &ndash;</div>
       <div class="s-sub" id="s-saldo-sub">Tersedia saat ini</div>
     </div>
     <div class="summary-card tx">
-      <div class="s-icon">📋</div>
+      <div class="s-icon">&#128203;</div>
       <div class="s-label">Total Transaksi</div>
-      <div class="s-value sky" id="s-txn">–</div>
+      <div class="s-value sky" id="s-txn">&ndash;</div>
       <div class="s-sub" id="s-txn-sub">Item tercatat</div>
     </div>
   </div>
@@ -296,7 +311,7 @@
     <div style="position:relative;height:190px;">
       <canvas id="pieChart"></canvas>
     </div>
-    <div id="pie-legend" style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;font-size:10px;"></div>
+    <div id="pie-legend" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:11px;"></div>
   </div>
 
   <!-- ALOKASI PENGELUARAN -->
@@ -311,48 +326,48 @@
 
   <!-- PROGRESS & INFO -->
   <div class="card fade">
-    <div class="card-title">Realisasi & Info Dana</div>
+    <div class="card-title">Realisasi &amp; Info Dana</div>
     <div class="prog-wrap">
-      <div class="prog-label"><span>Dana Terpakai</span><span id="pct-keluar" style="color:var(--red);font-weight:700">–%</span></div>
+      <div class="prog-label"><span>Dana Terpakai</span><span id="pct-keluar" style="color:var(--red);font-weight:700">&ndash;%</span></div>
       <div class="prog-bar"><div class="prog-fill fill-sky" id="fill-keluar" style="width:0%"></div></div>
     </div>
-    <div class="prog-wrap" style="margin-top:12px;">
-      <div class="prog-label"><span>Saldo Tersisa</span><span id="pct-saldo" style="color:var(--gold);font-weight:700">–%</span></div>
+    <div class="prog-wrap" style="margin-top:14px;">
+      <div class="prog-label"><span>Saldo Tersisa</span><span id="pct-saldo" style="color:var(--gold);font-weight:700">&ndash;%</span></div>
       <div class="prog-bar"><div class="prog-fill fill-gold" id="fill-saldo" style="width:0%"></div></div>
     </div>
     <div class="mini-grid">
       <div class="mini-box sky">
         <div class="mini-label">Donasi Yayasan</div>
-        <div class="mini-val" id="m-yayasan">–</div>
+        <div class="mini-val" id="m-yayasan">&ndash;</div>
         <div class="mini-sub">Dana utama</div>
       </div>
       <div class="mini-box gold">
         <div class="mini-label">Donasi Masy.</div>
-        <div class="mini-val" id="m-donasi">–</div>
-        <div class="mini-sub">Warga & alumni</div>
+        <div class="mini-val" id="m-donasi">&ndash;</div>
+        <div class="mini-sub">Warga &amp; alumni</div>
       </div>
       <div class="mini-box green">
         <div class="mini-label">Bank Mandiri</div>
-        <div class="mini-val" id="m-mandiri">–</div>
+        <div class="mini-val" id="m-mandiri">&ndash;</div>
         <div class="mini-sub">CSR / bantuan</div>
       </div>
       <div class="mini-box purple">
         <div class="mini-label">Infak Siswa</div>
-        <div class="mini-val" id="m-infak">–</div>
-        <div class="mini-sub">& orang tua</div>
+        <div class="mini-val" id="m-infak">&ndash;</div>
+        <div class="mini-sub">&amp; orang tua</div>
       </div>
     </div>
   </div>
 
   <!-- BAR CHART -->
   <div class="card fade" style="grid-column:1/3;">
-    <div class="card-title">Arus Kas Bulanan – Pemasukan vs Pengeluaran</div>
+    <div class="card-title">Arus Kas Bulanan &ndash; Pemasukan vs Pengeluaran</div>
     <div style="position:relative;height:210px;">
       <canvas id="barChart"></canvas>
     </div>
-    <div style="display:flex;gap:18px;margin-top:8px;font-size:10px;">
-      <span style="display:flex;align-items:center;gap:5px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:rgba(14,158,112,.7);display:inline-block"></span>Pemasukan</span>
-      <span style="display:flex;align-items:center;gap:5px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:rgba(208,40,42,.65);display:inline-block"></span>Pengeluaran</span>
+    <div style="display:flex;gap:18px;margin-top:10px;font-size:11px;">
+      <span style="display:flex;align-items:center;gap:5px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:rgba(11,140,99,.7);display:inline-block"></span>Pemasukan</span>
+      <span style="display:flex;align-items:center;gap:5px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:rgba(196,31,33,.65);display:inline-block"></span>Pengeluaran</span>
     </div>
   </div>
 
@@ -375,7 +390,7 @@
           <button class="txn-filter-btn" onclick="setTxnFilter('masuk',this)">Masuk</button>
           <button class="txn-filter-btn" onclick="setTxnFilter('keluar',this)">Keluar</button>
         </div>
-        <span class="table-badge" id="txn-count-badge">Memuat…</span>
+        <span class="table-badge" id="txn-count-badge">Memuat&hellip;</span>
       </div>
     </div>
     <div class="txn-wrap" id="txn-wrap">
@@ -391,9 +406,9 @@
       </table>
     </div>
     <div class="pagination">
-      <button class="page-btn" id="btn-prev" onclick="changePage(-1)">← Prev</button>
-      <span class="page-info" id="page-info">–</span>
-      <button class="page-btn" id="btn-next" onclick="changePage(1)">Next →</button>
+      <button class="page-btn" id="btn-prev" onclick="changePage(-1)">&larr; Prev</button>
+      <span class="page-info" id="page-info">&ndash;</span>
+      <button class="page-btn" id="btn-next" onclick="changePage(1)">Next &rarr;</button>
       <select class="page-size-select" id="page-size" onchange="changePageSize()">
         <option value="20">20 / hal</option>
         <option value="50" selected>50 / hal</option>
@@ -407,14 +422,14 @@
 
 <!-- FOOTER -->
 <div class="footer">
-  <span class="footer-brand">🕌 MASJID AR-RAHMAH – YAYASAN AR-RAHMAH SULAWESI</span>
-  <span>Data live dari Google Sheets • Auto-refresh setiap 30 detik</span>
+  <span class="footer-brand"><img src="logomasjidarrahmah.png" alt="" class="footer-logo">MASJID AR-RAHMAH &ndash; YAYASAN AR-RAHMAH SULAWESI</span>
+  <span>Data live dari Google Sheets &bull; Auto-refresh setiap 30 detik</span>
   <span id="footer-clock" style="font-weight:700;color:var(--sky-dark)"></span>
 </div>
 
 <script>
 // ════════════════════════════════════════════════════════════
-//  ⚙️  KONFIGURASI — GANTI URL SETELAH DEPLOY APPS SCRIPT BARU
+// ⚙️ KONFIGURASI — GANTI URL SETELAH DEPLOY APPS SCRIPT BARU
 // ════════════════════════════════════════════════════════════
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYjKVPkhp7oD68SKXSxSjLKscueEOKwwCuHtkWg1uB-zD9kKt9ut7Bdf3-tU9gaDE/exec";
 const REFRESH_INTERVAL = 30000;
@@ -450,11 +465,12 @@ function log(msg, type='info') {
   el.scrollTop = el.scrollHeight;
   console.log('[LPJ]', msg);
 }
-
 function toggleLog() {
   document.getElementById('debug-log').classList.toggle('show');
 }
-
+function toggleAdminPanel() {
+  document.getElementById('debug-panel').classList.toggle('show');
+}
 function dbg(id, val, isErr) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -479,22 +495,20 @@ function setSyncStatus(msg, ok) {
   el.textContent = msg;
   el.className = 'sync-info ' + (ok ? 'sync-ok' : 'sync-err');
 }
-
 function showError(msg, tips) {
   const el = document.getElementById('err-banner');
   el.style.display = 'block';
   el.innerHTML = `<strong>⚠ ${msg}</strong>` + (tips ? `<ul>${tips.map(t=>`<li>${t}</li>`).join('')}</ul>` : '');
 }
-
 function hideError() {
   document.getElementById('err-banner').style.display = 'none';
 }
 
 // ════════════════════════════════════════════════════════════
-//  FETCH DATA — 3 STRATEGI FALLBACK
-//  1. fetch() langsung (paling andal jika CORS OK)
-//  2. JSONP (fallback jika CORS blocked)
-//  3. no-cors fetch (terakhir — hanya bisa cek konektivitas)
+// FETCH DATA — 3 STRATEGI FALLBACK
+// 1. fetch() langsung (paling andal jika CORS OK)
+// 2. JSONP (fallback jika CORS blocked)
+// 3. no-cors fetch (terakhir — hanya bisa cek konektivitas)
 // ════════════════════════════════════════════════════════════
 function fetchData() {
   setSyncStatus('Menyinkronkan…', false);
@@ -509,7 +523,6 @@ function fetchWithFetch() {
   const url = APPS_SCRIPT_URL + '?t=' + Date.now();
   log('STRATEGI 1: fetch() → ' + url.substring(0,80) + '…');
   dbg('dbg-method', 'fetch()');
-
   fetch(url)
     .then(res => {
       log('fetch() response: HTTP ' + res.status + ' ' + res.statusText);
@@ -545,7 +558,6 @@ let _jsonpCB = null;
 function fetchWithJSONP() {
   log('STRATEGI 2: JSONP fallback…');
   dbg('dbg-method', 'JSONP');
-
   const cbName = '_lpj_cb_' + Date.now();
   const old = document.getElementById('_jsonp_s');
   if (old) old.remove();
@@ -571,7 +583,7 @@ function fetchWithJSONP() {
   }, 10000);
 
   const s = document.createElement('script');
-  s.id  = '_jsonp_s';
+  s.id = '_jsonp_s';
   s.src = APPS_SCRIPT_URL + '?callback=' + cbName + '&t=' + Date.now();
   s.onerror = () => {
     clearTimeout(_jsonpCB);
@@ -590,10 +602,8 @@ function onDataReceived(data, method) {
     onFetchFailed('Error dari server: ' + data.error);
     return;
   }
-
   retryCount = 0;
   cachedData = data;
-
   const txnCount = (data.transaksi || []).length;
   log(`Data OK via ${method}: ${txnCount} transaksi, masuk=${fmtShort(data.ringkasan?.totalMasuk||0)}`);
   dbg('dbg-status', '✓ Data diterima');
@@ -601,10 +611,8 @@ function onDataReceived(data, method) {
   dbg('dbg-txn', txnCount + ' item');
   dbg('dbg-res', 'OK ✓');
   dbg('dbg-time', new Date().toLocaleTimeString('id-ID'));
-
   setSyncStatus('✓ Sinkron ' + new Date().toLocaleTimeString('id-ID'), true);
   hideError();
-
   if (filterDari || filterSampai) {
     renderFiltered();
   } else {
@@ -617,16 +625,14 @@ function onFetchFailed(reason) {
   retryCount++;
   log(`SEMUA STRATEGI GAGAL (percobaan ${retryCount}): ${reason}`);
   dbg('dbg-status', `GAGAL (${retryCount}x)`, true);
-
   setSyncStatus('⚠ Gagal sinkron', false);
   showError('Tidak dapat mengambil data dari Apps Script', [
     'Pastikan Apps Script sudah di-deploy ulang sebagai Web App baru',
     'Pastikan akses deployment: <strong>Execute as: Me</strong> dan <strong>Who has access: Anyone</strong>',
     'Klik kanan URL Apps Script di browser → pastikan bisa diakses',
     'Setelah deploy ulang, ganti URL di variabel <code>APPS_SCRIPT_URL</code>',
-    'Cek tab LOG di bawah debug panel untuk detail error'
+    'Klik ikon &#9881; di pojok kanan bawah untuk membuka panel LOG teknis'
   ]);
-
   if (retryCount <= MAX_RETRY) {
     const delay = retryCount * 5000;
     log(`Retry ${retryCount}/${MAX_RETRY} dalam ${delay/1000} detik…`);
@@ -660,23 +666,20 @@ function filterTxn(list) {
   return list.filter(t => {
     const d = getTglDate(t);
     if (!d) return true;
-    if (filterDari   && d < filterDari)   return false;
+    if (filterDari && d < filterDari) return false;
     if (filterSampai && d > filterSampai) return false;
     return true;
   });
 }
-
 function hitungDariTxn(list) {
   let totalMasuk=0, totalKeluar=0, jumlahTxn=0;
   const bulanan={}, sumber={yayasan:0,donasi:0,mandiri:0,infak:0,penjualan:0,lainnya:0};
   const kategori={"Besi & Material":0,"Honor Tukang":0,"Eksterior":0,"Cor & Molen":0,"Plafon & Kubah":0,"Kayu & Balok":0,"Kusen & Jendela":0,"Lain-lain":0};
-
   list.forEach(t => {
     const v=t.jumlah||0, k=(t.ket||'').toLowerCase();
     const d=getTglDate(t);
     const bk=d ? d.toLocaleDateString('id-ID',{month:'short',year:'2-digit'}) : '?';
     if (!bulanan[bk]) bulanan[bk]={masuk:0,keluar:0};
-
     if (t.jenis==='M') {
       totalMasuk+=v; bulanan[bk].masuk+=v;
       if (k.includes('yayasan')) sumber.yayasan+=v;
@@ -698,22 +701,19 @@ function hitungDariTxn(list) {
     }
     jumlahTxn++;
   });
-
   return {
     ringkasan:{totalMasuk,totalKeluar,saldoAkhir:totalMasuk-totalKeluar,jumlahTxn,lastUpdate:cachedData?.ringkasan?.lastUpdate||'–'},
     bulanan, sumber, kategori, transaksi:list
   };
 }
-
 function applyFilter() {
   if (!cachedData) return;
-  filterDari   = document.getElementById('f-dari').value   ? new Date(document.getElementById('f-dari').value)   : null;
+  filterDari = document.getElementById('f-dari').value ? new Date(document.getElementById('f-dari').value) : null;
   filterSampai = document.getElementById('f-sampai').value ? new Date(document.getElementById('f-sampai').value) : null;
   if (filterSampai) filterSampai.setHours(23,59,59,999);
   document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
   renderFiltered(); updateFilterStatus();
 }
-
 function resetFilter() {
   filterDari=filterSampai=null;
   document.getElementById('f-dari').value='';
@@ -723,29 +723,26 @@ function resetFilter() {
   updateFilterStatus();
   if (cachedData) renderAll(cachedData);
 }
-
 function setShortcut(key, btn) {
   if (key==='semua') { resetFilter(); return; }
   const now=new Date(), y=now.getFullYear(), m=now.getMonth();
   let dari, sampai;
-  if (key==='bulan-ini')  { dari=new Date(y,m,1); sampai=new Date(y,m+1,0); }
+  if (key==='bulan-ini') { dari=new Date(y,m,1); sampai=new Date(y,m+1,0); }
   if (key==='bulan-lalu') { dari=new Date(y,m-1,1); sampai=new Date(y,m,0); }
-  if (key==='3-bulan')    { dari=new Date(y,m-2,1); sampai=new Date(y,m+1,0); }
-  if (key==='6-bulan')    { dari=new Date(y,m-5,1); sampai=new Date(y,m+1,0); }
-  if (key==='tahun-ini')  { dari=new Date(y,0,1); sampai=new Date(y,11,31); }
+  if (key==='3-bulan') { dari=new Date(y,m-2,1); sampai=new Date(y,m+1,0); }
+  if (key==='6-bulan') { dari=new Date(y,m-5,1); sampai=new Date(y,m+1,0); }
+  if (key==='tahun-ini') { dari=new Date(y,0,1); sampai=new Date(y,11,31); }
   filterDari=dari; filterSampai=sampai ? new Date(sampai.setHours(23,59,59,999)) : null;
-  document.getElementById('f-dari').value   = dari   ? dari.toISOString().slice(0,10) : '';
+  document.getElementById('f-dari').value = dari ? dari.toISOString().slice(0,10) : '';
   document.getElementById('f-sampai').value = sampai ? new Date(filterSampai).toISOString().slice(0,10) : '';
   document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   renderFiltered(); updateFilterStatus();
 }
-
 function renderFiltered() {
   if (!cachedData) return;
   renderAll(hitungDariTxn(filterTxn(cachedData.transaksi)));
 }
-
 function updateFilterStatus() {
   const el=document.getElementById('filter-status');
   if (!filterDari && !filterSampai) { el.classList.remove('active'); el.textContent=''; return; }
@@ -764,12 +761,11 @@ function renderAll(data) {
   renderBigTxn(data.transaksi);
   renderTicker(data.ringkasan, data.sumber);
 }
-
 function renderSummary(r) {
-  document.getElementById('s-masuk').textContent  = fmt(r.totalMasuk);
+  document.getElementById('s-masuk').textContent = fmt(r.totalMasuk);
   document.getElementById('s-keluar').textContent = fmt(r.totalKeluar);
-  document.getElementById('s-saldo').textContent  = fmt(r.saldoAkhir);
-  document.getElementById('s-txn').textContent    = r.jumlahTxn + ' Item';
+  document.getElementById('s-saldo').textContent = fmt(r.saldoAkhir);
+  document.getElementById('s-txn').textContent = r.jumlahTxn + ' Item';
   const isF = filterDari || filterSampai;
   if (isF) {
     const txt = (filterDari?filterDari.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}):'…')+' – '+(filterSampai?filterSampai.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}):'…');
@@ -782,7 +778,6 @@ function renderSummary(r) {
     document.getElementById('s-saldo-sub').textContent='Update: '+r.lastUpdate;
   }
 }
-
 function renderProgress(r) {
   const pK=r.totalMasuk>0?((r.totalKeluar/r.totalMasuk)*100).toFixed(1):0;
   const pS=r.totalMasuk>0?((r.saldoAkhir/r.totalMasuk)*100).toFixed(1):0;
@@ -791,39 +786,33 @@ function renderProgress(r) {
   document.getElementById('fill-keluar').style.width=Math.min(pK,100)+'%';
   document.getElementById('fill-saldo').style.width=Math.min(pS,100)+'%';
 }
-
 function renderSumber(s) {
   document.getElementById('m-yayasan').textContent=fmtShort(s.yayasan||0);
   document.getElementById('m-donasi').textContent=fmtShort(s.donasi||0);
   document.getElementById('m-mandiri').textContent=fmtShort(s.mandiri||0);
   document.getElementById('m-infak').textContent=fmtShort(s.infak||0);
-
   const COLORS=['#0090D0','#B8860B','#0E9E70','#7B52D4','#E07820','#D0282A'];
   const labels=['Yayasan','Donasi','Mandiri','Lainnya','Infak','Penjualan'];
   const vals=[s.yayasan||0,s.donasi||0,s.mandiri||0,s.lainnya||0,s.infak||0,s.penjualan||0];
-
   if (pieChart) { pieChart.destroy(); pieChart=null; }
   pieChart=new Chart(document.getElementById('pieChart'),{
     type:'doughnut',
     data:{labels,datasets:[{data:vals,backgroundColor:COLORS,borderWidth:2,borderColor:'#fff',hoverOffset:8}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)}}}}
   });
-
   const total=vals.reduce((a,b)=>a+b,0);
   document.getElementById('pie-legend').innerHTML=labels.map((l,i)=>
-    `<span style="display:flex;align-items:center;gap:4px;color:#3A5068"><span style="width:9px;height:9px;border-radius:2px;background:${COLORS[i]};display:inline-block;flex-shrink:0"></span>${l} ${total>0?((vals[i]/total)*100).toFixed(1)+'%':''}</span>`
+    `<span style="display:flex;align-items:center;gap:4px;color:#33495D;font-weight:600"><span style="width:9px;height:9px;border-radius:2px;background:${COLORS[i]};display:inline-block;flex-shrink:0"></span>${l} ${total>0?((vals[i]/total)*100).toFixed(1)+'%':''}</span>`
   ).join('');
 }
-
 function renderKategori(kat) {
   if (!kat) return;
-  const COLORS=['#0090D0','#B8860B','#0E9E70','#7B52D4','#E07820','#D0282A','#1A8C78','#7A9AB8'];
+  const COLORS=['#0090D0','#B8860B','#0E9E70','#7B52D4','#E07820','#D0282A','#1A8C78','#5F7A93'];
   const sorted=Object.entries(kat).sort((a,b)=>b[1]-a[1]);
   document.getElementById('kat-list').innerHTML=sorted.map(([k,v],i)=>
     `<li class="kat-item"><span class="kat-dot" style="background:${COLORS[i%COLORS.length]}"></span><span class="kat-name">${k}</span><span class="kat-amount">${fmtShort(v)}</span></li>`
   ).join('');
 }
-
 function renderBulanan(bulanan) {
   if (!bulanan) return;
   const entries=Object.entries(bulanan);
@@ -831,10 +820,10 @@ function renderBulanan(bulanan) {
   barChart=new Chart(document.getElementById('barChart'),{
     type:'bar',
     data:{labels:entries.map(e=>e[0]),datasets:[
-      {label:'Pemasukan',data:entries.map(e=>e[1].masuk),backgroundColor:'rgba(14,158,112,.7)',borderColor:'#0E9E70',borderWidth:1,borderRadius:4},
-      {label:'Pengeluaran',data:entries.map(e=>e[1].keluar),backgroundColor:'rgba(208,40,42,.65)',borderColor:'#D0282A',borderWidth:1,borderRadius:4}
+      {label:'Pemasukan',data:entries.map(e=>e[1].masuk),backgroundColor:'rgba(11,140,99,.7)',borderColor:'#0B8C63',borderWidth:1,borderRadius:4},
+      {label:'Pengeluaran',data:entries.map(e=>e[1].keluar),backgroundColor:'rgba(196,31,33,.65)',borderColor:'#C41F21',borderWidth:1,borderRadius:4}
     ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)}}},scales:{x:{ticks:{color:'#7A9AB8',font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,100,160,.07)'}},y:{ticks:{color:'#7A9AB8',font:{size:9},callback:v=>v>=1e6?(v/1e6).toFixed(0)+'Jt':v},grid:{color:'rgba(0,100,160,.07)'}}}}
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)}}},scales:{x:{ticks:{color:'#5F7A93',font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,100,160,.07)'}},y:{ticks:{color:'#5F7A93',font:{size:9},callback:v=>v>=1e6?(v/1e6).toFixed(0)+'Jt':v},grid:{color:'rgba(0,100,160,.07)'}}}}
   });
 }
 
@@ -873,26 +862,24 @@ function renderTxnPage() {
     const isIn=t.jenis==='M', rowNo=start+idx+1;
     return `<tr>
       <td style="color:var(--text3);font-size:11px">${rowNo}</td>
-      <td style="font-size:11px;white-space:nowrap">${t.tanggal}</td>
-      <td style="font-size:12px">${t.ket}</td>
+      <td style="font-size:11.5px;white-space:nowrap">${t.tanggal}</td>
+      <td style="font-size:12.5px">${t.ket}</td>
       <td><span class="${isIn?'badge-in':'badge-out'}">${isIn?'MASUK':'KELUAR'}</span></td>
       <td class="${isIn?'amt-in':'amt-out'}" style="text-align:right;white-space:nowrap">${isIn?'+':'-'} ${fmtN(t.jumlah)}</td>
     </tr>`;
   }).join('');
-  document.getElementById('page-info').textContent='Hal '+txnPage+' / '+maxPage+'  ('+(start+1)+'–'+end+' dari '+total+')';
+  document.getElementById('page-info').textContent='Hal '+txnPage+' / '+maxPage+' ('+(start+1)+'–'+end+' dari '+total+')';
   document.getElementById('btn-prev').disabled=txnPage<=1;
   document.getElementById('btn-next').disabled=txnPage>=maxPage;
 }
-
 function renderBigTxn(list) {
   if (!list) return;
   const sorted=[...list].sort((a,b)=>b.jumlah-a.jumlah).slice(0,7);
   document.getElementById('big-txn-list').innerHTML=sorted.map(t=>{
     const isIn=t.jenis==='M';
-    return `<li class="kat-item"><span class="kat-dot" style="background:${isIn?'#0E9E70':'#D0282A'}"></span><span class="kat-name" style="font-size:11px">${t.ket.length>35?t.ket.substring(0,35)+'…':t.ket}</span><span class="kat-amount" style="color:${isIn?'var(--green)':'var(--red)'}">${isIn?'+':'-'}${fmtShort(t.jumlah).replace('Rp ','')}</span></li>`;
+    return `<li class="kat-item"><span class="kat-dot" style="background:${isIn?'#0B8C63':'#C41F21'}"></span><span class="kat-name" style="font-size:11.5px">${t.ket.length>35?t.ket.substring(0,35)+'…':t.ket}</span><span class="kat-amount" style="color:${isIn?'var(--green)':'var(--red)'}">${isIn?'+':'-'}${fmtShort(t.jumlah).replace('Rp ','')}</span></li>`;
   }).join('');
 }
-
 function renderTicker(r, s) {
   const items=[
     `Total Pemasukan: ${fmt(r.totalMasuk)}`,
@@ -906,7 +893,7 @@ function renderTicker(r, s) {
     `Update terakhir: ${r.lastUpdate}`,
     `بَارَكَ اللهُ فِيكُمْ — Semoga Allah meridhoi pembangunan ini`
   ];
-  document.getElementById('ticker').innerHTML=[...items,...items].map(t=>`<span>🕌  ${t}</span>`).join('');
+  document.getElementById('ticker').innerHTML=[...items,...items].map(t=>`<span>🕌 ${t}</span>`).join('');
 }
 
 // ── AUTO SCROLL ────────────────────────────────────────────────
